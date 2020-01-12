@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: white !important;
+}
+
+body{
+    background-image: url('./assets/bc.jpg');
+}
+
+
+*{
+    box-sizing:  border-box;
+}
+
+li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none !important;
+}
+
+.active {
+    color: red !important;
+}
+
+.container {
+    width: 1280px;
+    margin: 0 auto;
+}
+
+.container-content {
+    padding-top: 100px;
+}
+
+/* DISPLAY FLEX CLASS */
+
+.flex {
+    display: flex;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+/* PAGINATION STYLE */
+
+.page-item.disabled .page-link {
+    background-color: #00000000 !important;
+    color: white !important;
+}
+.page-link{
+    background-color: #00000000 !important;
+    color: white !important;
+}
+
+.page-link:hover {
+    border-color: red !important;
+
+}
+
+.page-item.active .page-link{
+    color: red !important;
+    border-color: red !important;
+}
+.page-link:focus{
+    box-shadow: none !important;
+}

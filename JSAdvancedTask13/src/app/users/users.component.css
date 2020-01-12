@@ -1,0 +1,62 @@
+table.users {
+    margin: 0 auto;
+    border-radius: 10px;
+    background: white;
+    color: #808080;
+    border-collapse: collapse;
+}
+
+table.users tr.head{
+    height: 60px;
+    background: #36304a;
+}
+
+table.users tr th {
+    font-family: OpenSans-Regular;
+    font-size: 18px;
+    color: #fff;
+}
+
+tr {
+    height: 40px;
+    text-align: left;
+}
+
+.pagination-table {
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.collumn1 {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.collumn2 {
+    width: 150px;
+    padding-left: 20px;
+}
+
+.collumn3 {
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 40px;
+}
+
+.collumn4 {
+    width: 200px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.collumn5 {
+    width: 200px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.bg-black{
+    background: black;
+    color: white;
+}

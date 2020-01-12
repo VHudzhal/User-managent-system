@@ -1,0 +1,37 @@
+
+<app-add-user (addUserList)="addUserList($event)"></app-add-user>
+
+<div class="users-list">
+
+    <table class="users">
+        <tr class="head">
+            <th class="collumn1">ID</th>
+            <th class="collumn2">User Name</th>
+            <th class="collumn3">User Email</th>
+            <th class="collumn4">Created User</th>
+            <th class="collumn5">Update User</th>
+        </tr>
+        <tr *ngFor=" let i = index; let user of users | slice: pageSize | slice: 0:itemsPerPage | sortBy" 
+            class="user-info" 
+            [class.bg-black]="i%2 !== 0">
+            <td class="collumn1">{{user.id}}</td>
+            <td class="collumn2">{{user.name}}</td>
+            <td class="collumn3">{{user.email}}</td>
+            <td class="collumn4">{{user.created_at | date:'MM/dd/yyyy'}}</td>
+            <td class="collumn5">{{user.update_at | date:'MM/dd/yyyy'}}</td>
+        </tr>
+
+    </table>
+
+    <div class="pagination-table">
+
+        <ngb-pagination 
+        [collectionSize]="collectionSize" [pageSize]="itemsPerPage" [(page)]="currentPage" 
+        (pageChange)="onPageChange($event)">
+        </ngb-pagination>
+
+    </div>
+
+</div>
+
+

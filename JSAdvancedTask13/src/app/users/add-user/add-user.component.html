@@ -1,0 +1,14 @@
+<div class="add-user flex flex-end" >
+
+    <form #f="ngForm">
+
+        <input type="text" required name="text" #text="ngModel" ngModel pattern="[a-zA-Z]+">
+
+        <button (click)="addUser(f.value.text); f.reset()"
+                [disabled]="f.invalid">ADD
+        
+        </button>
+        
+    </form>
+
+</div>
