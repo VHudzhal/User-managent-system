@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { _ } from 'underscore';
+// import { _ } from 'underscore';
+import * as underscore from 'underscore';
 
 import { IUser } from '../service/userInterface';
 
@@ -20,14 +21,12 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUsers().subscribe(users => {
-      const sortByUsers = _.sortBy(users, 'name');
-      this.users = sortByUsers;
+      this.users = underscore.sortBy(users, 'name');
     });
   }
 
   addUserList(users: Array<IUser>) {
-    const sortByUsers = _.sortBy(users, 'name');
-    this.users = sortByUsers;
+    this.users = underscore.sortBy(users, 'name');
   }
 
 }
