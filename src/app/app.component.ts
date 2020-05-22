@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from './service/login/login.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,30 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'JSAdvancedTask15';
+  title = 'user-system';
+
+  constructor(private router: Router, private loginService: LoginService){
+
+  }
+
+  get isLoggedIn(){
+    return this.loginService.isLoggedIn;
+  }
+
+  getUsers(){
+    this.router.navigateByUrl('/users');
+  }
+
+  getDashboard(){
+    this.router.navigateByUrl('/dashboard');
+  }
+
+  getMyPage(){
+    this.router.navigateByUrl('/my-page')
+  }
+
+  logOut(){
+    this.loginService.logOut()
+  }
+
 }
