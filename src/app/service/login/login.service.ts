@@ -14,7 +14,7 @@ export class LoginService {
   // baseUrl = '/auth/';
 
   currentUser: IUser;
-  
+
   get isLoggedIn(): boolean {
     return !!this.currentUser;
   }
@@ -24,29 +24,28 @@ export class LoginService {
   login(obj: {login: string, password: string}): Observable<IUser>{
     return this.http.post<IUser>(this.baseUrl + 'login', {login: obj.login, password: obj.password}).pipe(
       tap( data => {
-        if (data['status'] === 403){
-          throw(data)
+        if (data["status"] === 403){
+          throw(data);
         }
       }),
       catchError( (err: HttpErrorResponse) => {
-        console.log("err login")
-        return throwError(err)
+        console.log('err login');
+        return throwError(err);
       })
-    )
+    );
   }
 
   logOut(): void{
     this.currentUser = null;
     this.http.post(this.baseUrl+'logout', {refreshToken: localStorage.getItem('refresh_token')}).pipe(
       catchError( err => {
-        return throwError(err)
+        return throwError(err);
       })
     ).subscribe( data => {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
-      this.router.navigateByUrl("")
+      this.router.navigateByUrl('');
     },
-    err => console.log(err))
+    err => console.log(err));
   }
-  
 }

@@ -27,11 +27,11 @@ export class AppComponent {
   }
 
   getMyPage(){
-    this.router.navigateByUrl('/my-page')
+    this.router.navigateByUrl('/my-page');
   }
 
   logOut(){
-    this.loginService.logOut()
+    this.loginService.logOut();
   }
 
 }

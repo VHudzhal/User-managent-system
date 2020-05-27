@@ -36,7 +36,7 @@ export class UserService {
   }
 
   updateUserById(id: number, userName:string, userLogin: string){
-    return this.http.put(this.baseUrl + `/${id}`, {id: id, name: userName, login:userLogin})
+    return this.http.put(this.baseUrl + `/${id}`, {id: id, name: userName, login: userLogin})
   }
 
   deleteUserById(id: number): Observable<Object>{
