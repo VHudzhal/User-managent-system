@@ -49,7 +49,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.users.push({
       name: obj.text,
       login: obj.text.toLowerCase(),
-      email: obj.text + "@mail.ru",
+      email: obj.text + "@gmail.com",
       password: 12345,
       created_at: date,
       update_at: date,
