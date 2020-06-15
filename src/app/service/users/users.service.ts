@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-import { IUser } from './userInterface'
+import { IUser } from './userInterface';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -17,10 +17,10 @@ export class UserService {
   // baseUrl = '/users';
   users: Array<IUser>;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
-  
+
   getUsers(): Observable<Array<IUser>>{
     const headers = new HttpHeaders().set("access-token", localStorage.getItem("access_token"))
     return this.http.get<Array<IUser>>(this.baseUrl).pipe(
@@ -35,7 +35,7 @@ export class UserService {
     return this.http.get<IUser>(this.baseUrl + `/${id}`)
   }
 
-  updateUserById(id: number, userName:string, userLogin: string){
+  updateUserById(id: number, userName: string, userLogin: string){
     return this.http.put(this.baseUrl + `/${id}`, {id: id, name: userName, login: userLogin})
   }
 

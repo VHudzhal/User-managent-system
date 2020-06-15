@@ -70,15 +70,14 @@ server.use(function (req, res, next) {
 
 /* =====================CONNECT DATABASE MYSQL===================== */
 const mysql = require("mysql2");
-
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     database: "users",
     password: "root"
 });
-// const connection = mysql.createConnection('mysql://b5bec95840a84d:f8461cf6@us-cdbr-iron-east-04.cleardb.net/heroku_711fe32cc04199e?reconnect=true')
 
+// const connection = mysql.createConnection('mysql://b5bec95840a84d:f8461cf6@us-cdbr-iron-east-04.cleardb.net/heroku_711fe32cc04199e?reconnect=true')
 connection.connect(function(err){
     if (err) {
         return console.error("Ошибка: " + err.message);
@@ -99,7 +98,7 @@ server.get("/users", passport.authenticate("jwt", {session: false}), function(re
     const select = `select * from users`
     connection.query(select, (err, result) => {
         if (err){
-            res.status(500).json({err: 'mysql faild'})
+            res.status(500).json({err: 'mysql failed'})
         }
         res.status(200).json(result)
         return
@@ -107,26 +106,30 @@ server.get("/users", passport.authenticate("jwt", {session: false}), function(re
 })
 
 server.post("/users", passport.authenticate("jwt", {session: false}), function (req, res) {
-    const date = new Date()
-    const currentDate = formatDate(date)
-    const insert = `insert into users(name, login, email, password, created_at, update_at, admin) values ("${req.body.name}", "${req.body.name}","${req.body.name}@mail.ru", 12345 , "${currentDate}", "${currentDate}", false);`
-    connection.query(insert, function(err, result){
-        if (err){
-            res.status(500).json({err: err})
-        }
-        connection.query(`SET FOREIGN_KEY_CHECKS = 0; insert into entitlements (can_view_users, user_id) values(true, ${result.insertId})`, function(err, result){
-            if (err){
-                res.status(500).json({err: err})
-            }
-            res.status(200).json(`Users ${req.body.name} added`)
-        })
+  const date = new Date()
+  const currentDate = formatDate(date)
+
+  let insertUser = `INSERT INTO users (name, login, email, password, created_at, update_at, admin) VALUES (?,?,?,?,?,?,?)`
+  let valuesUser = [req.body.name,req.body.name,req.body.name+'@mail.ru', 12345, currentDate,currentDate,false];
+
+  connection.query(insertUser,valuesUser, function(err, result){
+    if (err) return res.status(500).json({err: err})
+
+    let insertEnti = 'INSERT INTO entitlements (can_view_users, user_id) VALUES (?,?)';
+    let valuesEnti = [true,result.insertId];
+    connection.query(insertEnti,valuesEnti, function(err, result){
+
+      if (err) return res.status(500).json({err: err})
+      return res.status(200).json(`Users ${req.body.name} added`)
     })
+  })
 })
+
 
 server.get("/users/:id", passport.authenticate("jwt", {session: false}), function (req, res) {
     const id = req.params.id
     const select = `
-          select u.id, u.name, u.login, u.email, u.created_at, u.update_at, u.admin, e.can_view_users, e.can_edit_users, 
+          select u.id, u.name, u.login, u.email, u.created_at, u.update_at, u.admin, e.can_view_users, e.can_edit_users,
           e.can_delete_users, e.can_view_details, e.can_view_details_full, e.can_edit_users_full from users u
           join entitlements e on e.user_id = u.id
           where u.id=?`
@@ -192,78 +195,77 @@ server.put("/users/:id/delete-entitlements", passport.authenticate("jwt", {sessi
 
 // Updated User
 server.put("/users/:id", passport.authenticate("jwt", {session: false}), function (req, res){
-    const {id, name, login } = req.body
-    const update_at = formatDate(new Date())
-    const update = 'update users set name=?, login=?, update_at=? where id=?'
-    connection.query(update, [name,login, update_at,id], function(err, result){
-        if (err){
-            res.status(500).json({err: err})
-            return
-        }
-        res.status(200).json({msg: `User ${name} update`})
-    })
+  const {id, name, login } = req.body
+  const update_at = formatDate(new Date())
+  const update = 'update users set name=?, login=?, update_at=? where id=?'
+  connection.query(update, [name,login, update_at,id], function(err, result){
+    if (err){
+      res.status(500).json({err: err})
+      return
+    }
+    res.status(200).json({msg: `User ${name} update`})
+  })
 })
 
 server.delete("/users/:id", passport.authenticate("jwt", {session: false}), function (req, res) {
-    const userId = req.params.id
-    const deleteEntitlements = `SET FOREIGN_KEY_CHECKS = 0; delete from entitlements where user_id=?`;
-    connection.query(deleteEntitlements, [userId], function(err, result){
 
-        const deleteUser = `SET FOREIGN_KEY_CHECKS = 0; delete from users where id=?`
-        connection.query(deleteUser, [userId], function( err, result ){
-            if (err){
-                res.status(500).json({err: err})
-            }
-            res.status(200).json({msg: `User delete`})
-        })
+  const userId = req.params.id;
+  const fieldEnti = `DELETE FROM entitlements WHERE user_id = ${userId}`
 
+  connection.query(fieldEnti, function(err, result){
+    const fieldUser = `DELETE FROM users WHERE id = ${userId}`
+    connection.query(fieldUser, function( err, result ){
+
+      if (err) return res.status(500).json({err: err})
+
+      return res.status(200).json({msg: `User delete`})
     })
+  })
 })
 // LOGIN
 server.post("/auth/login", function(req, res, next) {
-    const { login, password } = req.body;
-    if (login && password ) {
-        const select = `
-    select u.id, u.name, u.login, u.email, u.password, u.created_at, u.update_at, u.admin, e.can_view_users, e.can_edit_users, 
+  const { login, password } = req.body;
+  if (login && password ) {
+    const select = `
+    select u.id, u.name, u.login, u.email, u.password, u.created_at, u.update_at, u.admin, e.can_view_users, e.can_edit_users,
            e.can_delete_users, e.can_view_details, e.can_view_details_full, e.can_edit_users_full from users u
            join entitlements e on e.user_id = u.id
            where login=?`;
 
-        connection.query(select, [login], function(err, result){
-            if (err){
-                res.status(500).json({err: err});
-            }
-            console.log(result)
-            try{
-                if (result.length === 0){
-                    throw ({msg: "User not found", status: 403})
-                }
-                if (result[0].login !== login){
-                    throw ({msg: "login is incorrect", status: 403})
-                }
-                if (result[0].password !== password){
-                    throw ({msg: "Password is incorrect", status: 403})
-                }
-                if (result[0].password == password && result[0].login == login){
+    connection.query(select, [login], function(err, result){
+      if (err){
+        res.status(500).json({err: err});
+      }
+      console.log(result)
+      try{
+        if (result.length === 0){
+          throw ({msg: "User not found", status: 403})
+        }
+        if (result[0].login !== login){
+          throw ({msg: "login is incorrect", status: 403})
+        }
+        if (result[0].password !== password){
+          throw ({msg: "Password is incorrect", status: 403})
+        }
+        if (result[0].password == password && result[0].login == login){
 
-                    let payload = { id: result[0].id };
-                    let token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn:'15m'});
-                    let refreshToken = uuid()
-                    saveRefreshToken(result[0].id, refreshToken)
-                    res.status(200).json({user: result[0], token: token, refreshToken: refreshToken})
-                    return
-                }
+          let payload = { id: result[0].id };
+          let token = jwt.sign(payload, jwtOptions.secretOrKey, {expiresIn:'15m'});
+          let refreshToken = uuid()
+          saveRefreshToken(result[0].id, refreshToken)
+          res.status(200).json({user: result[0], token: token, refreshToken: refreshToken})
+          return
+        }
 
-            } catch(err){
-                res.send(err)
-                return
-            }
-        })
+      } catch(err){
+        res.send(err)
+        return
+      }
+    })
 
-    }
+  }
 
 })
-
 // LOGOUT
 server.post("/auth/logout", passport.authenticate("jwt", {session: false}), function(req, res){
     const {refreshToken} = req.body
@@ -330,7 +332,7 @@ server.use(function(err, req, res, next) {
 //   res.sendFile(path.join(__dirname + '/dist/user-system/index.html'))
 // });
 
-// server.listen(process.env.PORT || 3001); 
+// server.listen(process.env.PORT || 3001);
 server.listen(3001, function () {
     console.log('Example app listening on port 3001');
 });

@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     })
   }
-
   localStorageSave(user: IUser){
     localStorage.setItem("access_token", user["token"]);
     localStorage.setItem("refresh_token", user["refreshToken"]);

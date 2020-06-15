@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { SubscriptionLike  } from 'rxjs';
+import { SubscriptionLike  } from "rxjs";
 
-import { IUser } from '../service/users/userInterface';
+import { IUser } from '../service/users/userInterface'
 
 import { UserService } from '../service/users/users.service';
 import { NotifyService } from '../service/notification/notify.service';
@@ -10,19 +10,21 @@ import { LoginService } from '../service/login/login.service';
 
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
+import { bounceAnimation } from '../animation/animated-router-outlet';
 
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.css'],
+  animations: [bounceAnimation]
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
   faTrash = faTrash;
 
   users: Array<IUser>;
-  subscription: SubscriptionLike;
+  subscription:SubscriptionLike;
 
   currentUser: IUser;
 
@@ -49,7 +51,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.users.push({
       name: obj.text,
       login: obj.text.toLowerCase(),
-      email: obj.text + "@mail.ru",
+      email: obj.text + "@gmail.com",
       password: 12345,
       created_at: date,
       update_at: date,
