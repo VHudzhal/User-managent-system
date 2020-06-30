@@ -328,12 +328,12 @@ server.use(function(err, req, res, next) {
     }
 });
 
-// server.get("/*", function (req, res) {
-//   res.sendFile(path.join(__dirname + '/dist/user-system/index.html'))
-// });
-
-// server.listen(process.env.PORT || 3001);
-server.listen(3001, function () {
-    console.log('Example app listening on port 3001');
+server.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname + '/dist/user-system/index.html'))
 });
+
+server.listen(process.env.PORT || 3001);
+// server.listen(8080, function () {
+//     console.log('Example app listening on port 3001');
+// });
 
