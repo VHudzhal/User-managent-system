@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "JSAdvancedTask15": {
+    "JSAdvancedTask16": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/JSAdvancedTask15",
+            "outputPath": "dist/JSAdvancedTask16",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "JSAdvancedTask15:build"
+            "browserTarget": "JSAdvancedTask16:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "JSAdvancedTask15:build:production"
+              "browserTarget": "JSAdvancedTask16:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "JSAdvancedTask15:build"
+            "browserTarget": "JSAdvancedTask16:build"
           }
         },
         "test": {
@@ -110,11 +110,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "JSAdvancedTask15:serve"
+            "devServerTarget": "JSAdvancedTask16:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "JSAdvancedTask15:serve:production"
+              "devServerTarget": "JSAdvancedTask16:serve:production"
             }
           }
         }
