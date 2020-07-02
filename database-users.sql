@@ -40,10 +40,8 @@ INSERT INTO `users` (`id`, `name`, `login`, `email`, `password`, `created_at`, `
 (3, 'Misha', 'Mihail', 'misha@gmail.com', 'admin', '2020-01-02', '2020-01-02', 1),
 (4, 'Sasha', 'Alexandr', 'sasha@gmail.com', 'agent', '2020-01-02', '2020-01-02', 0),
 (5, 'Olha', 'Olha', 'olha@gmail.com', 'agent', '2020-06-06', '2020-06-09', 0);
-
 insert into entitlements (can_view_users, can_edit_users, can_delete_users, can_view_details, can_view_details_full, can_edit_users_full, user_id) values
     (true, true, true, true, true, true, 1),
     (true, true, false, true, false, false, 2);
 
 select * from users;
-users
