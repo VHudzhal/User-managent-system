@@ -110,7 +110,7 @@ server.post("/users", passport.authenticate("jwt", {session: false}), function (
   const currentDate = formatDate(date)
 
   let insertUser = `INSERT INTO users (name, login, email, password, created_at, update_at, admin) VALUES (?,?,?,?,?,?,?)`
-  let valuesUser = [req.body.name,req.body.name,req.body.name+'@mail.ru', 12345, currentDate,currentDate,false];
+  let valuesUser = [req.body.name,req.body.name,req.body.name+'@gmail.com', 12345, currentDate,currentDate,false];
 
   connection.query(insertUser,valuesUser, function(err, result){
     if (err) return res.status(500).json({err: err})
