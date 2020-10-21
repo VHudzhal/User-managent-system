@@ -107,10 +107,10 @@ server.get("/users", passport.authenticate("jwt", {session: false}), function(re
 
 server.post("/users", passport.authenticate("jwt", {session: false}), function (req, res) {
   const date = new Date()
-  const currentDate = formatDate(date)
+  const currentDate = formatDate(date);
 
   let insertUser = `INSERT INTO users (name, login, email, password, created_at, update_at, admin) VALUES (?,?,?,?,?,?,?)`
-  let valuesUser = [req.body.name,req.body.name,req.body.name+'@gmail.com', 12345, currentDate,currentDate,false];
+  let valuesUser = [req.body.name,req.body.name,req.body.name+'@mail.ru', 12345, currentDate,currentDate,false];
 
   connection.query(insertUser,valuesUser, function(err, result){
     if (err) return res.status(500).json({err: err})
@@ -154,9 +154,14 @@ server.get("/users/:id/entitlements", passport.authenticate("jwt", {session: fal
 })
 // Update user entitlements
 server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {session: false}), function (req, res){
-    const { id, entitlements } = req.body
-    const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=true where user_id=?`
-    connection.query(update, [id], function(err, result){
+    const { id, entitlements } = req.body.entitlements
+  //first variant query
+    // const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=true where user_id=?`
+//second variant query
+    const update = `update entitlements  set entitlements.can_edit_users=true, entitlements.can_delete_users=true,
+    entitlements.can_view_details=true, entitlements.can_view_details_full=true, entitlements.can_edit_users_full=true where user_id=?`
+  const update_1 = `update entitlements  set entitlements.can_edit_users=true where user_id=?`;
+  connection.query(update, [id], function(err, result){
         if (err){
             res.status(500).json({err: err})
             return
@@ -171,14 +176,45 @@ server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {session:
             res.status(200).json({msg: `User update`, entitlements: result[0]})
         })
     })
-})
+});
+// server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {
+//   session: false
+// }), function (req, res) {
+//   const {
+//     id, entitlements
+//   } = req.body
+//   const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=true where user_id=?`
+//   connection.query(update, [id], function (err, result) {
+//     if (err) {
+//       res.status(500).json({
+//         err: err
+//       })
+//       return
+//     }
+//     const select = `select e.can_view_users, e.can_edit_users, e.can_delete_users, e.can_view_details,
+//                     e.can_view_details_full, e.can_edit_users_full from entitlements e where user_id =?`
+//     connection.query(select, [id], function (err, result) {
+//       if (err) {
+//         res.status(500).json({
+//           err: err
+//         })
+//         return
+//       }
+//       res.status(200).json({
+//         msg: `User update`
+//         , entitlements: result[0]
+//       })
+//     })
+//   })
+// })
 
 server.put("/users/:id/delete-entitlements", passport.authenticate("jwt", {session: false}), function (req, res){
-    const { id, entitlements } = req.body
-    const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=false where user_id=?`
+    const { id, entitlements } = req.body;
+    // const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=false where user_id=?`;
+    const update = ` update entitlements set ${entitlements}=false where user_id=?`;
     connection.query(update, [id], function(err, result){
         if (err){
-            res.status(500).json({err: err})
+            res.status(500).json({err: err});
             return
         }
         const select = `select e.can_view_users, e.can_edit_users, e.can_delete_users, e.can_view_details,
