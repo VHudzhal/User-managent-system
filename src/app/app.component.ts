@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './service/login/login.service';
-
+import {bounceAnimation} from './animation/animated-router-outlet';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+    animations: [bounceAnimation]
 })
 export class AppComponent {
   title = 'user-system';
