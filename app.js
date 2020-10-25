@@ -154,12 +154,12 @@ server.get("/users/:id/entitlements", passport.authenticate("jwt", {session: fal
 })
 // Update user entitlements
 server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {session: false}), function (req, res){
-    const { id, entitlements } = req.body.entitlements
+    const { id, entitlements } = req.body
   //first variant query
-    // const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=true where user_id=?`
+    const update = `update entitlements set ${entitlements}=true where user_id=?`
 //second variant query
-    const update = `update entitlements  set entitlements.can_edit_users=true, entitlements.can_delete_users=true,
-    entitlements.can_view_details=true, entitlements.can_view_details_full=true, entitlements.can_edit_users_full=true where user_id=?`
+    //const update = `update entitlements  set entitlements.can_edit_users=true, entitlements.can_delete_users=true,
+   // entitlements.can_view_details=true, entitlements.can_view_details_full=true, entitlements.can_edit_users_full=true where user_id=?`
   const update_1 = `update entitlements  set entitlements.can_edit_users=true where user_id=?`;
   connection.query(update, [id], function(err, result){
         if (err){
