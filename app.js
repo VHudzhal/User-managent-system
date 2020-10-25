@@ -154,7 +154,7 @@ server.get("/users/:id/entitlements", passport.authenticate("jwt", {session: fal
 })
 // Update user entitlements
 server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {session: false}), function (req, res){
-    const { id, entitlements } = req.body
+    const { id, entitlements } = req.body;
   //first variant query
     const update = `update entitlements set ${entitlements}=true where user_id=?`
 //second variant query
@@ -177,40 +177,9 @@ server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {session:
         })
     })
 });
-// server.put("/users/:id/add-entitlements", passport.authenticate("jwt", {
-//   session: false
-// }), function (req, res) {
-//   const {
-//     id, entitlements
-//   } = req.body
-//   const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=true where user_id=?`
-//   connection.query(update, [id], function (err, result) {
-//     if (err) {
-//       res.status(500).json({
-//         err: err
-//       })
-//       return
-//     }
-//     const select = `select e.can_view_users, e.can_edit_users, e.can_delete_users, e.can_view_details,
-//                     e.can_view_details_full, e.can_edit_users_full from entitlements e where user_id =?`
-//     connection.query(select, [id], function (err, result) {
-//       if (err) {
-//         res.status(500).json({
-//           err: err
-//         })
-//         return
-//       }
-//       res.status(200).json({
-//         msg: `User update`
-//         , entitlements: result[0]
-//       })
-//     })
-//   })
-// })
 
 server.put("/users/:id/delete-entitlements", passport.authenticate("jwt", {session: false}), function (req, res){
     const { id, entitlements } = req.body;
-    // const update = `SET FOREIGN_KEY_CHECKS = 0; update entitlements set ${entitlements}=false where user_id=?`;
     const update = ` update entitlements set ${entitlements}=false where user_id=?`;
     connection.query(update, [id], function(err, result){
         if (err){
